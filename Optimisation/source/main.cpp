@@ -164,7 +164,6 @@ int main(int ac, char **av)
 	Car carD(5271, 1496);
 	Car carB(4924, 1797);
 	Car carC(4924, 1797);
-	double shift = 0;
 	Point P;
 	int index = 0;
 

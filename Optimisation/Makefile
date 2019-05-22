@@ -20,16 +20,19 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) $(OBJ) -o $(NAME)
+	@printf "\n\e[38;5;82m##################################################\e[0m\n\n"
+	@printf "\e[38;5;82m\t\tREADY FOR OPTIMISATION\e[0m\n"
+	@printf "\n\e[38;5;82m##################################################\e[0m\n\n"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(OBJ_PATH)
 	@$(CC) -c $^
 
 clean:
-
+	@$(RM) $(NAME)
 
 fclean: clean
-	
+
 
 re: fclean all
 
