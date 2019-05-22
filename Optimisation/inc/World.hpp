@@ -2,17 +2,26 @@
 #define WORLD_HPP
 #include <iostream>
 #include <vector>
-#include "World.hpp"
 
 class World
 {
 public:
-	World();
+	World(double limite_camion, double step);
 	~World();
-	bool debug_flag = false;
-	bool visu_flag = false;
-	double limite_camion = 19000.0f;
-	double step = 100.0f;
+	bool GetDebugFlag();
+	void SetDeBugFlag(bool status);
+	bool GetVisuFlag();
+	void SetVisuFlag(bool status);
+	double GetLimiteCamion();
+	void SetLimiteCamion(double new_limite);
+	double GetStep();
+	void SetStep(double new_step);
+
+private :
+	bool m_debug_flag;
+	bool m_visu_flag;
+	double m_limite_camion;
+	double m_step;
 };
 
 #endif

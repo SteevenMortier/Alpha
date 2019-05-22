@@ -1,10 +1,5 @@
 #include "../inc/algocoll.hpp"
 
-bool debug_flag = false;
-bool visu_flag = false;
-double limite_camion = 19000.0f;
-double step = 100.0f;
-
 void reset_angle(Car *car)
 {
 	int index = 0;
@@ -15,7 +10,7 @@ void reset_angle(Car *car)
 	}
 }
 
-bool check_params(double position)
+bool check_params(World *env, double position) //prend le env qui contiendra les gerbeurs
 {
 	double known_position = 12000;
 	if (position >= known_position - 500 && position <= known_position + 100)
@@ -23,7 +18,7 @@ bool check_params(double position)
 	return false;
 }
 
-void gerbeur_holder(Car *car)
+void gerbeur_holder(World *env, Car *car)
 {
 	double gerbeur_x = 12000;
 	int max_angle = -35;
@@ -40,7 +35,7 @@ void gerbeur_holder(Car *car)
 	if (angle <= max_angle)
 	{
 		angle = 0;
-		(*car).m_shift += step;
+		(*car).m_shift += env->GetStep();
 		reset_angle(car);
 	}
 	index = 0;
@@ -60,7 +55,7 @@ void gerbeur_holder(Car *car)
 	angle -= 3;
 }
 
-bool move_car(std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
+bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
 {
 	int index;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
@@ -68,19 +63,19 @@ bool move_car(std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
 	{
 		while (collision_ret)
 		{
-			DEBUG printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
+			DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
 			//printf("%f\n", (*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght);
-			if (check_params((*Lot)[cars_placed].m_shift))
-				gerbeur_holder((&(*Lot)[cars_placed]));
+			if (check_params(env, (*Lot)[cars_placed].m_shift))
+				gerbeur_holder(env, (&(*Lot)[cars_placed]));
 			else
 			{
-				if ((*Lot)[cars_placed].m_shift + collision_ret < limite_camion)
+				if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion())
 					(*Lot)[cars_placed].m_shift = collision_ret + 50;
 				else
-					(*Lot)[cars_placed].m_shift += step;
-				if ((*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= limite_camion)
+					(*Lot)[cars_placed].m_shift += env->GetStep();
+				if ((*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
 				{
-					DEBUG printf("\e[31m\t\tLeave cause of the limite\e[39m\n");
+					DEBUGP printf("\e[31m\t\tLeave cause of the limite\e[39m\n");
 					return false;
 				}
 				index = 0;
@@ -93,16 +88,16 @@ bool move_car(std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
 			}
 			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 		}
-		if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= limite_camion)
+		if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
 		{
-			DEBUG printf("\e[31m\t\tLeave cause of the limite but wout collision\e[39m\n");
+			DEBUGP printf("\e[31m\t\tLeave cause of the limite but wout collision\e[39m\n");
 			return false;
 		}
 	}
 	return true;
 }
 
-int place_cars(std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, int index)
+int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, int index)
 {
 	static int cars_placed;
 	static int number_call;
@@ -111,18 +106,18 @@ int place_cars(std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, in
 	{
 		// Coder le visu ici
 		number_call++;
-		DEBUG printf("Number call = %d\n", number_call);
-		DEBUG std::cout << "\e[34mPlacing = " << cars_placed << "\e[39m" << std::endl;
-		if (move_car(Lot, cars_placed, map)) // we move following car following the route until it can be placed
+		DEBUGP printf("Number call = %d\n", number_call);
+		DEBUGP std::cout << "\e[34mPlacing = " << cars_placed << "\e[39m" << std::endl;
+		if (move_car(env, Lot, cars_placed, map)) // we move following car following the route until it can be placed
 		{
 			(*map).push_back((*Lot)[cars_placed]);
-			DEBUG printf("\t\t\e[32mCar%d added on the map at %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
+			DEBUGP printf("\t\t\e[32mCar%d added on the map at %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
 			cars_placed += 1;
 		}
 		else
 		{
 			(*map).pop_back();
-			DEBUG printf("\e[31m\tCar%lu as been deleted from the map\e[39m\n", (*map).size());
+			DEBUGP printf("\e[31m\tCar%lu as been deleted from the map\e[39m\n", (*map).size());
 			index = 0;
 			for (auto tmp : (*Lot)[cars_placed].m_coords)
 			{
@@ -131,9 +126,9 @@ int place_cars(std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, in
 			}
 			(*Lot)[cars_placed].m_shift = 0.0f;
 			cars_placed -= 1;
-			if ((*map).size() <= 0 && (*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= limite_camion)
+			if ((*map).size() <= 0 && (*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
 				return -1;
-			(*Lot)[cars_placed].m_shift += step;
+			(*Lot)[cars_placed].m_shift += env->GetStep();
 			index = 0;
 			for (auto tmp : (*Lot)[cars_placed].m_coords)
 			{
@@ -141,7 +136,7 @@ int place_cars(std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, in
 				index++;
 			}
 		}
-		VISU{
+		VISUP{
 				for (auto tmp : (*map))
 				{
 					std::cout << "------" << std::endl;
@@ -158,6 +153,7 @@ int place_cars(std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, in
 
 int main(int ac, char **av)
 {
+	World env(19000, 100);
 	std::vector<Car> Lot;
 	std::vector<Car> map;
 	Car carA(5271, 1496);
@@ -172,18 +168,18 @@ int main(int ac, char **av)
 		std::string s(av[index]);
 		if (!s.find("-P"))
 		{
-			step = atof(av[index] + 2);
-			if (step <= 0)
-				step = 500;
-			std::cout << "Soft Precision with step = " << step << std::endl;
+			env.SetStep(atof(av[index] + 2));
+			if (env.GetStep() <= 0)
+				env.SetStep(500);
+			std::cout << "Soft Precision with step = " << env.GetStep() << std::endl;
 		}
 		if (!strcmp(av[index], "-D"))
-			debug_flag = true;
+			env.SetDeBugFlag(true);
 		if (!strcmp(av[index], "-V"))
-			visu_flag = true;
+			env.SetVisuFlag(true);
 		if (strcmp(av[index], "-D") && strcmp(av[index], "-V") && s.find("-P"))
 			std::cout << "Flag \"" << av[index] << "\" does not exist\nPlease Use -D or -V or -P(step)" << std::endl;
-		if (visu_flag && debug_flag)
+		if (env.GetVisuFlag() && env.GetDebugFlag())
 		{
 			std::cout << "-V and -D can't be used at the same time\n-D for Debug\n-V for the Visu\n-Opti for optimisation" << std::endl;
 			return (0);
@@ -239,7 +235,7 @@ int main(int ac, char **av)
 	carD.ID = 1;
 	Lot.push_back(carD);
 
-	if (place_cars(&Lot, Lot.size(), &map, index) == -1)
+	if (place_cars(&env, &Lot, Lot.size(), &map, index) == -1)
 	{
 		VISU std::cout << "END VISU" << std::endl;
 		printf("Impossible de placer le Lot\n");

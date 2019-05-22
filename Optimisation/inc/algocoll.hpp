@@ -9,8 +9,10 @@
 #include "Vecteur.hpp"
 #include "World.hpp"
 
-# define DEBUG	if (debug_flag)
-# define VISU	if (visu_flag)
+# define DEBUG	if (env.GetDebugFlag())
+# define VISU	if (env.GetDebugFlag())
+# define DEBUGP	if (env->GetDebugFlag())
+# define VISUP	if (env->GetVisuFlag())
 
 int intersectsegment(Point A,Point B,Point I,Point P);
 

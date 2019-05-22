@@ -4,7 +4,8 @@ SRC_NAME	=	main.cpp		\
 				collision.cpp 	\
 				Car.cpp 		\
 				Vecteur.cpp 	\
-				Point.cpp
+				Point.cpp		\
+				World.cpp
 
 OBJ_NAME	=	$(SRC:.c=.o)
 SRC_PATH	=	./source
@@ -13,7 +14,7 @@ SRC			=	$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ			=	$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 CC			=	g++ -std=c++11
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Wextra #-Werror
 CPPFLAGS	=	-I./inc
 
 all: $(NAME)
