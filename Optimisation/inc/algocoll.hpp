@@ -10,7 +10,7 @@
 #include "World.hpp"
 
 # define DEBUG	if (env.GetDebugFlag())
-# define VISU	if (env.GetDebugFlag())
+# define VISU	if (env.GetVisuFlag())
 # define DEBUGP	if (env->GetDebugFlag())
 # define VISUP	if (env->GetVisuFlag())
 

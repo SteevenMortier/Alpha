@@ -13,9 +13,9 @@ public:
 	std::vector<Point> m_coords;
 	std::vector<Point> m_coords_init;
 	double m_lenght;
-	int ID;
 	double m_hight;
 	double m_shift;
+	int m_ID;
 };
 
 #endif

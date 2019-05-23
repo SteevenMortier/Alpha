@@ -200,7 +200,7 @@ int main(int ac, char **av)
 	carA.m_coords.push_back(Point(527.1, 1047.2));
 	carA.m_coords.push_back(Point(0, 1047.2));
 	carA.m_coords_init = carA.m_coords;
-	carA.ID = 0;
+	carA.m_ID = 0;
 	Lot.push_back(carA);
 	//Points : Mercedes CLE SUV
 	carB.m_coords.push_back(Point(0, 0));
@@ -211,7 +211,7 @@ int main(int ac, char **av)
 	carB.m_coords.push_back(Point(757.31, 1797));
 	carB.m_coords.push_back(Point(0, 1347.75));
 	carB.m_coords_init = carB.m_coords;
-	carB.ID = 1;
+	carB.m_ID = 1;
 	Lot.push_back(carB);
 	carC.m_coords.push_back(Point(0, 0));
 	carC.m_coords.push_back(Point(4924, 0));
@@ -221,7 +221,7 @@ int main(int ac, char **av)
 	carC.m_coords.push_back(Point(757.31, 1797));
 	carC.m_coords.push_back(Point(0, 1347.75));
 	carC.m_coords_init = carB.m_coords;
-	carC.ID = 1;
+	carC.m_ID = 2;
 	Lot.push_back(carC);
 	carD.m_coords.push_back(Point(0, 0));
 	carD.m_coords.push_back(Point(5271, 0));
@@ -232,7 +232,7 @@ int main(int ac, char **av)
 	carD.m_coords.push_back(Point(527.1, 1047.2));
 	carD.m_coords.push_back(Point(0, 1047.2));
 	carD.m_coords_init = carA.m_coords;
-	carD.ID = 1;
+	carD.m_ID = 3;
 	Lot.push_back(carD);
 
 	if (place_cars(&env, &Lot, Lot.size(), &map, index) == -1)
