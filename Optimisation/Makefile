@@ -5,7 +5,9 @@ SRC_NAME	=	main.cpp		\
 				Car.cpp 		\
 				Vecteur.cpp 	\
 				Point.cpp		\
-				World.cpp
+				World.cpp		\
+				gerbeurs.cpp	\
+				placing.cpp
 
 OBJ_NAME	=	$(SRC:.c=.o)
 SRC_PATH	=	./source
