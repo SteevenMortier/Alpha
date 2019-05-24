@@ -1,4 +1,4 @@
-#include "../inc/algocoll.hpp"
+#include "../../inc/algocoll.hpp"
 
 Point::Point() = default;
 

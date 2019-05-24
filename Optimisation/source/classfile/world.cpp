@@ -1,4 +1,4 @@
-#include "../inc/algocoll.hpp"
+#include "../../inc/algocoll.hpp"
 
 World::World(double limite_camion, double step) : m_debug_flag(false),
     m_visu_flag(false), m_limite_camion(limite_camion), m_step(step)

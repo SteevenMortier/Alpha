@@ -2,10 +2,10 @@ NAME		=	Optimisation
 
 SRC_NAME	=	main.cpp		\
 				collision.cpp 	\
-				Car.cpp 		\
-				Vecteur.cpp 	\
-				Point.cpp		\
-				World.cpp		\
+				classfile/Car.cpp 		\
+				classfile/Vecteur.cpp 	\
+				classfile/Point.cpp		\
+				classfile/World.cpp		\
 				gerbeurs.cpp	\
 				placing.cpp
 
