@@ -7,7 +7,8 @@ SRC_NAME	=	main.cpp		\
 				classfile/Point.cpp		\
 				classfile/World.cpp		\
 				gerbeurs.cpp	\
-				placing.cpp
+				placing.cpp		\
+				pits.cpp
 
 OBJ_NAME	=	$(SRC:.c=.o)
 SRC_PATH	=	./source

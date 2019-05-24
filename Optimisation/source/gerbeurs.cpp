@@ -13,8 +13,8 @@ void reset_angle(Car *car)
 
 bool check_params(World *env, double position) //prend le env qui contiendra les gerbeurs
 {
-	double known_position = 12000;
-	if (position >= known_position - 500 && position <= known_position + 100)
+	double known_position_gerbeur = 12000;
+	if (position >= known_position_gerbeur - 500 && position <= known_position_gerbeur + 100)
 		return true;
 	return false;
 }

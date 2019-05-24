@@ -30,4 +30,8 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 
 int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<Car>* map, int index);
 
+double calc_angle(Car *car, double pit_high);
+
+void pits_holder(World *env, Car *car);
+
 #endif
