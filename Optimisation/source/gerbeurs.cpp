@@ -1,24 +1,5 @@
 #include "../inc/algocoll.hpp"
 
-void reset_angle(Car *car)
-{
-	int index = 0;
-	for (auto tmp : (*car).m_coords)
-	{
-		(*car).m_coords[index].x = (*car).m_coords_init[index].x + (*car).m_shift;
-		(*car).m_coords[index].y = (*car).m_coords_init[index].y;
-		index++;
-	}
-}
-
-bool check_params(World *env, double position) //prend le env qui contiendra les gerbeurs
-{
-	double known_position_gerbeur = 12000;
-	if (position >= known_position_gerbeur - 500 && position <= known_position_gerbeur + 100)
-		return true;
-	return false;
-}
-
 void gerbeur_holder(World *env, Car *car)
 {
 	double gerbeur_x = 12000;

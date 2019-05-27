@@ -11,6 +11,10 @@ function love.quit()
 	-- io.write("Error : Wrong file\n")
 	love.event.quit()
 end
+
+function draw_elem()
+    love.graphics.line(5000 / 20, w_height / 2 + 500 / 20, 5500 / 20, w_height / 2 + 500 / 20)
+end
 -------MAIN
 
 function        love.load()
@@ -62,6 +66,7 @@ function        love.draw()
     local bool = false
     local first = {0, 0}
     love.graphics.line(20000 / 20, 0, 20000 / 20, w_height)
+    draw_elem()
     for i,v in ipairs(map) do
         --print (v)
         if (v ~= "end car") then

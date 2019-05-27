@@ -22,7 +22,7 @@ int car_collision(Car car2, size_t nbp_car2, std::vector<Car> *map);
 
 void reset_angle(Car *car);
 
-bool check_params(World *env, double position);
+int check_params(World *env, Car *car);
 
 void gerbeur_holder(World *env, Car *car);
 

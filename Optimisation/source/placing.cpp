@@ -3,15 +3,17 @@
 bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
 {
 	int index;
+	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 	for (auto map_c : (*map))
 	{
 		while (collision_ret)
 		{
 			DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
-			if (check_params(env, (*Lot)[cars_placed].m_shift))
-				gerbeur_holder(env, (&(*Lot)[cars_placed]));
-			else
+			//if (check_params(env, &(*Lot)[cars_placed]))
+			//	gerbeur_holder(env, (&(*Lot)[cars_placed]));
+			checkp_ret = check_params(env, &(*Lot)[cars_placed]);
+			if (!checkp_ret)
 			{
 				if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion())
 					(*Lot)[cars_placed].m_shift = collision_ret + 50;
@@ -31,6 +33,16 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 				}
 			}
 			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
+			if (checkp_ret == 2)
+			{
+				index = 0;
+				for (auto tmp : (*Lot)[cars_placed].m_coords)
+				{
+					(*Lot)[cars_placed].m_coords[index].x = (*Lot)[cars_placed].m_coords_init[index].x + (*Lot)[cars_placed].m_shift;
+					(*Lot)[cars_placed].m_coords[index].y = (*Lot)[cars_placed].m_coords_init[index].y;
+					index++;
+				}
+			}
 		}
 		if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
 		{
