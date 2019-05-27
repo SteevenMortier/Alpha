@@ -10,8 +10,6 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 		while (collision_ret)
 		{
 			DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
-			//if (check_params(env, &(*Lot)[cars_placed]))
-			//	gerbeur_holder(env, (&(*Lot)[cars_placed]));
 			checkp_ret = check_params(env, &(*Lot)[cars_placed]);
 			if (!checkp_ret)
 			{
@@ -36,6 +34,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 			if (checkp_ret == 2)
 			{
 				index = 0;
+				(*Lot)[cars_placed].m_shift += env->GetStep();
 				for (auto tmp : (*Lot)[cars_placed].m_coords)
 				{
 					(*Lot)[cars_placed].m_coords[index].x = (*Lot)[cars_placed].m_coords_init[index].x + (*Lot)[cars_placed].m_shift;

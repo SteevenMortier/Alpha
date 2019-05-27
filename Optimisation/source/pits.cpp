@@ -31,5 +31,5 @@ void pits_holder(World *env, Car *car)
 		index++;
 		//printf("Rotate : x = %f, y = %f at index : %d\n", tmpx, tmpy, index);
 	}
-    (*car).m_shift += env->GetStep();
+    //(*car).m_shift += env->GetStep();
 }
