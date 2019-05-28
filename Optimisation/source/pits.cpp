@@ -8,15 +8,28 @@ double calc_angle(Car *car, double pit_high)
     return ((180 * atan(pit_high / (*car).m_lenght)) / M_PI);
 }
 
+void replace_to_pos(World *env, Car *car, double pit_position)
+{
+    int index = 0;
+    (*car).m_shift += env->GetStep();
+    for (auto tmp : (*car).m_coords)
+    {
+        (*car).m_coords[index].x = (*car).m_coords_init[index].x + pit_position - (*car).m_lenght;
+        (*car).m_coords[index].y = (*car).m_coords_init[index].y;
+        index++;
+    }
+}
+
 void pits_holder(World *env, Car *car)
 {
     double pit_position = 5000;
     double pit_high = -500;
     double pit_lenght = 500;
-    double angle = 40;//calc_angle(car, pit_high);
+    double angle = -1 * calc_angle(car, pit_high);
     int index = 0;
 
     reset_angle(car);
+    replace_to_pos(env, car, pit_position);
     //printf("Pits angle : %f\n", angle);
     for (auto coord : (*car).m_coords)
 	{
@@ -26,6 +39,7 @@ void pits_holder(World *env, Car *car)
 		coord.y = coord.y;
 		tmpx = pit_position + coord.x * cos(angle * (M_PI / 180)) - coord.y * sin(angle * (M_PI / 180));
 		tmpy = 0 + coord.x * sin(angle * (M_PI / 180)) + coord.y * cos(angle * (M_PI / 180));
+        tmpy = tmpy + pit_high; // inversed
 		(*car).m_coords[index].x = tmpx;
 		(*car).m_coords[index].y = tmpy;
 		index++;

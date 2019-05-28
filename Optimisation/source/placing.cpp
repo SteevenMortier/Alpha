@@ -13,8 +13,8 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 			checkp_ret = check_params(env, &(*Lot)[cars_placed]);
 			if (!checkp_ret)
 			{
-				if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion())
-					(*Lot)[cars_placed].m_shift = collision_ret + 50;
+				if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion() && collision_ret > (*Lot)[cars_placed].m_shift)
+					(*Lot)[cars_placed].m_shift = collision_ret + 50; // Old : remove " && collision_ret > (*Lot)[cars_placed].m_shift" in the if upthere
 				else
 					(*Lot)[cars_placed].m_shift += env->GetStep();
 				if ((*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
@@ -30,8 +30,19 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 					index++;
 				}
 			}
+			VISUP{
+					for (auto tmp : (*Lot))
+					{
+						std::cout << "------" << std::endl;
+						for (auto point : tmp.m_coords)
+						{
+							std::cout << point.x <<"||"<< point.y << std::endl;
+						}
+					}
+					std::cout << "END MAP" << std::endl;
+				 }
 			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
-			if (checkp_ret == 2)
+			if (checkp_ret == 2 && collision_ret) // Pits case
 			{
 				index = 0;
 				(*Lot)[cars_placed].m_shift += env->GetStep();

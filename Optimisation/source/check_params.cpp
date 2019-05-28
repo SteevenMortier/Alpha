@@ -11,10 +11,10 @@ void reset_angle(Car *car)
 	}
 }
 
-int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeurs
+int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeurs et les pits
 {
     double position = (*car).m_shift;
-	double known_position_gerbeur = 12000;
+	double known_position_gerbeur = 9000;
 	double known_position_pit = 5000;
 	if (position >= known_position_gerbeur - 500 && position <= known_position_gerbeur + 100)
 	{

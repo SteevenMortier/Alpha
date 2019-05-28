@@ -2,7 +2,7 @@
 
 void gerbeur_holder(World *env, Car *car)
 {
-	double gerbeur_x = 12000;
+	double gerbeur_x = 9000;
 	int max_angle = -35;
 	static int angle = 0;
 	int index = 0;
