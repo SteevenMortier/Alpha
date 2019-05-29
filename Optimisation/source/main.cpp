@@ -1,5 +1,12 @@
 #include "../inc/algocoll.hpp"
 
+bool in_range(double nbr, double min, double max)
+{
+	if (nbr >= min && nbr <= max)
+		return true;
+	return false;
+}
+
 int main(int ac, char **av)
 {
 	World env(19000, 100);

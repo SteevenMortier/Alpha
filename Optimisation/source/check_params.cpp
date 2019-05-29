@@ -14,17 +14,21 @@ void reset_angle(Car *car)
 int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeurs et les pits
 {
     double position = (*car).m_shift;
-	double known_position_gerbeur = 9000;
+	double car_end_position = (*car).m_shift + (*car).m_lenght;
+	double known_position_gerbeur = 1000000;
 	double known_position_pit = 5000;
-	if (position >= known_position_gerbeur - 500 && position <= known_position_gerbeur + 100)
+	double pit_lenght = 1000;
+	if (in_range(position, known_position_pit - pit_lenght, known_position_pit + pit_lenght)
+		|| in_range(car_end_position, known_position_pit - pit_lenght, known_position_pit + pit_lenght))
+    {
+		//printf("Pit spotted\n");
+        pits_holder(env, car);
+        return 2;
+    }
+	if (in_range(car_end_position, known_position_gerbeur - 300, known_position_gerbeur + 300))
 	{
         gerbeur_holder(env, car);
         return 1;
-    }
-    else if (position >= known_position_pit - 200 && position <= known_position_pit + 600)
-    {
-        pits_holder(env, car);
-        return 2;
     }
     return 0;
 }

@@ -34,4 +34,6 @@ double calc_angle(Car *car, double pit_high);
 
 void pits_holder(World *env, Car *car);
 
+bool in_range(double nbr, double min, double max);
+
 #endif
