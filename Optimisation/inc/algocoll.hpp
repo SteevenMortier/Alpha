@@ -34,6 +34,11 @@ double calc_angle(Car *car, double pit_high);
 
 void pits_holder(World *env, Car *car);
 
-bool in_range(double nbr, double min, double max);
+template <typename T>
+bool in_range(T nbr, T min, T max){
+	if (nbr >= min && nbr <= max)
+   		return true;
+    return false;
+}
 
 #endif

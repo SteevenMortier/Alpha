@@ -5,7 +5,9 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 	int index;
 	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
-	for (auto map_c : (*map)) // POur la premiière voiture ?
+	if (cars_placed == 0) // If the map is empty (AKA first car), but no more collide with the same car
+		check_params(env, &(*Lot)[cars_placed]);
+	for (auto map_c : (*map))
 	{
 		while (collision_ret)
 		{
@@ -23,25 +25,21 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 					return false;
 				}
 				index = 0;
-				for (auto tmp : (*Lot)[cars_placed].m_coords)
-				{
-					(*Lot)[cars_placed].m_coords[index].x = (*Lot)[cars_placed].m_coords_init[index].x + (*Lot)[cars_placed].m_shift;
-					(*Lot)[cars_placed].m_coords[index].y = (*Lot)[cars_placed].m_coords_init[index].y;
-					index++;
-				}
+				reset_angle(&(*Lot)[cars_placed]);
 			}
-			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
-			VISUP{
-					for (auto tmp : (*Lot))
+			/*VISUP
+			{
+				for (auto tmp : (*Lot))
+				{
+					std::cout << "------" << std::endl;
+					for (auto point : tmp.m_coords)
 					{
-						std::cout << "------" << std::endl;
-						for (auto point : tmp.m_coords)
-						{
-							std::cout << point.x << "||" << point.y << std::endl;
-						}
+						std::cout << point.x << "||" << point.y << std::endl;
 					}
-					std::cout << "END MAP" << std::endl;
-				 }
+				}
+				std::cout << "END MAP" << std::endl;
+			}*/
+			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 		}
 		if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
 		{
@@ -62,7 +60,7 @@ int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<C
 		number_call++;
 		DEBUGP printf("Number call = %d\n", number_call);
 		DEBUGP std::cout << "\e[34mPlacing = " << cars_placed << "\e[39m" << std::endl;
-		if (move_car(env, Lot, cars_placed, map)) // we move following car following the route until it can be placed
+		if (move_car(env, Lot, cars_placed, map)) // we move car_placed car following the route until it can be placed
 		{
 			(*map).push_back((*Lot)[cars_placed]);
 			DEBUGP printf("\t\t\e[32mCar%d added on the map at %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
@@ -73,12 +71,8 @@ int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<C
 			(*map).pop_back();
 			DEBUGP printf("\e[31m\tCar%lu as been deleted from the map\e[39m\n", (*map).size());
 			index = 0;
-			for (auto tmp : (*Lot)[cars_placed].m_coords)
-			{
-				(*Lot)[cars_placed].m_coords[index].x = (*Lot)[cars_placed].m_coords_init[index].x;
-				index++;
-			}
 			(*Lot)[cars_placed].m_shift = 0.0f;
+			reset_angle(&(*Lot)[cars_placed]);
 			cars_placed -= 1;
 			if ((*map).size() <= 0 && (*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
 				return -1;

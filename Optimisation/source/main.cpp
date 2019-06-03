@@ -1,11 +1,11 @@
 #include "../inc/algocoll.hpp"
 
-bool in_range(double nbr, double min, double max)
+/*bool in_range(double nbr, double min, double max)
 {
 	if (nbr >= min && nbr <= max)
 		return true;
 	return false;
-}
+}*/
 
 int main(int ac, char **av)
 {
@@ -76,7 +76,7 @@ int main(int ac, char **av)
 	carC.m_coords.push_back(Point(3030.23, 1797));
 	carC.m_coords.push_back(Point(757.31, 1797));
 	carC.m_coords.push_back(Point(0, 1347.75));
-	carC.m_coords_init = carB.m_coords;
+	carC.m_coords_init = carC.m_coords;
 	carC.m_ID = 2;
 	Lot.push_back(carC);
 	carD.m_coords.push_back(Point(0, 0));
@@ -87,7 +87,7 @@ int main(int ac, char **av)
 	carD.m_coords.push_back(Point(1317.75, 1496));
 	carD.m_coords.push_back(Point(527.1, 1047.2));
 	carD.m_coords.push_back(Point(0, 1047.2));
-	carD.m_coords_init = carA.m_coords;
+	carD.m_coords_init = carD.m_coords;
 	carD.m_ID = 3;
 	Lot.push_back(carD);
 
