@@ -12,6 +12,7 @@ void put_angle(Car *car, double angle, double pit_position, double pit_high)
 {
     int index = 0;
 
+    reset_angle(car);
     for (auto coord : (*car).m_coords)
     {
         double tmpx;
@@ -36,7 +37,6 @@ void pits_holder(World *env, Car *car)
     double pit_lenght = 1000;
     double angle = calc_angle(car, pit_high);
 
-    reset_angle(car);
     if (in_range((*car).m_shift, pit_position - pit_lenght, pit_position + pit_lenght)) // negative angle
         put_angle(car, angle, pit_position, pit_high);
     else if (in_range(car_end_position, pit_position - pit_lenght, pit_position + pit_lenght)) //positive angle

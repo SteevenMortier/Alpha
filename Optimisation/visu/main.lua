@@ -65,7 +65,7 @@ function        love.draw()
     local old = {0, 0}
     local bool = false
     local first = {0, 0}
-    love.graphics.line(20000 / 20, 0, 20000 / 20, w_height)
+    love.graphics.line(19000 / 20, 0, 19000 / 20, w_height)
     draw_elem()
     for i,v in ipairs(map) do
         --print (v)

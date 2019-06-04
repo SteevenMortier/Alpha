@@ -51,6 +51,8 @@ int car_collision(Car car2, size_t nbp_car2, std::vector<Car> *map)
 {
 	for (auto map_c : (*map))
 	{
+		if (car2.m_shift == map_c.m_shift)
+			return (map_c.m_lenght + map_c.m_shift);
 		for (auto car : car2.m_coords)
 		{
 			if (Collision(map_c, map_c.m_coords.size(), car))

@@ -2,50 +2,50 @@
 
 bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Car> *map)
 {
-	int index;
 	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
-	if (cars_placed == 0) // If the map is empty (AKA first car), but no more collide with the same car
-		check_params(env, &(*Lot)[cars_placed]);
-	for (auto map_c : (*map))
+
+	while (collision_ret)
 	{
-		while (collision_ret)
+		DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
+		reset_angle(&(*Lot)[cars_placed]);
+		checkp_ret = check_params(env, &(*Lot)[cars_placed], map);
+		if (!checkp_ret)
 		{
-			DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
-			checkp_ret = check_params(env, &(*Lot)[cars_placed]);
-			if (!checkp_ret)
+			reset_angle(&(*Lot)[cars_placed]);
+			if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion() && collision_ret > (*Lot)[cars_placed].m_shift)
+				(*Lot)[cars_placed].m_shift = collision_ret + 50;
+			else
+				(*Lot)[cars_placed].m_shift += env->GetStep();
+			if ((*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
 			{
-				if ((*Lot)[cars_placed].m_shift + collision_ret < env->GetLimiteCamion() && collision_ret > (*Lot)[cars_placed].m_shift)
-					(*Lot)[cars_placed].m_shift = collision_ret + 50; // Old : remove " && collision_ret > (*Lot)[cars_placed].m_shift" in the if upthere
-				else
-					(*Lot)[cars_placed].m_shift += env->GetStep();
-				if ((*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
-				{
-					DEBUGP printf("\e[31m\t\tLeave cause of the limite\e[39m\n");
-					return false;
-				}
-				index = 0;
-				reset_angle(&(*Lot)[cars_placed]);
+				DEBUGP printf("\e[31m\t\tLeave cause of the limite\e[39m\n");
+				return false;
 			}
-			/*VISUP
-			{
-				for (auto tmp : (*Lot))
-				{
-					std::cout << "------" << std::endl;
-					for (auto point : tmp.m_coords)
-					{
-						std::cout << point.x << "||" << point.y << std::endl;
-					}
-				}
-				std::cout << "END MAP" << std::endl;
-			}*/
-			collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 		}
-		if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
+		VISUP
 		{
-			DEBUGP printf("\e[31m\t\tLeave cause of the limite but wout collision\e[39m\n");
-			return false;
+			for (auto tmp : (*Lot))
+			{
+				std::cout << "------" << std::endl;
+				for (auto point : tmp.m_coords)
+				{
+					std::cout << point.x << "||" << point.y << std::endl;
+				}
+			}
+			std::cout << "END MAP" << std::endl;
 		}
+		collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
+	}
+	if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
+	{
+		DEBUGP printf("\e[31m\t\tLeave cause of the limite but wout collision\e[39m\n");
+		return false;
+	}
+	if (cars_placed == 0) // If the map is empty (AKA first car), but no more collide with the same car
+	{
+		reset_angle(&(*Lot)[cars_placed]);
+		check_params(env, &(*Lot)[cars_placed], map);
 	}
 	return true;
 }
@@ -68,6 +68,8 @@ int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<C
 		}
 		else
 		{
+			if (cars_placed == 0)
+				return (-1);
 			(*map).pop_back();
 			DEBUGP printf("\e[31m\tCar%lu as been deleted from the map\e[39m\n", (*map).size());
 			index = 0;
