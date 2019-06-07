@@ -32,7 +32,6 @@ void gerbeur_holder(World *env, Car *car)
 		(*car).m_coords[index].x = tmpx;
 		(*car).m_coords[index].y = tmpy;
 		index++;
-		//printf("Rotate : x = %f, y = %f at index : %d\n", tmpx, tmpy, index);
 	}
 	angle -= 3;
 }

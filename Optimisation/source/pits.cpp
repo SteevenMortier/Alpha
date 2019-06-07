@@ -41,8 +41,4 @@ void pits_holder(World *env, Car *car)
         put_angle(car, angle, pit_position, pit_high);
     else if (in_range(car_end_position, pit_position - pit_lenght, pit_position + pit_lenght)) //positive angle
         put_angle(car, angle * -1, pit_position, pit_high);
-
-    //printf("Pits angle : %f\n", angle);
-
-    (*car).m_shift += env->GetStep();
 }

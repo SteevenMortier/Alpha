@@ -4,11 +4,13 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 {
 	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
+	bool collision_trigger = false;
 
+	reset_angle(&(*Lot)[cars_placed]);
 	while (collision_ret)
 	{
+		collision_trigger = true;
 		DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
-		reset_angle(&(*Lot)[cars_placed]);
 		checkp_ret = check_params(env, &(*Lot)[cars_placed], map);
 		if (!checkp_ret)
 		{
@@ -23,7 +25,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 				return false;
 			}
 		}
-		VISUP
+		/*VISUP
 		{
 			for (auto tmp : (*Lot))
 			{
@@ -34,7 +36,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 				}
 			}
 			std::cout << "END MAP" << std::endl;
-		}
+		}*/
 		collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 	}
 	if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
@@ -42,10 +44,11 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 		DEBUGP printf("\e[31m\t\tLeave cause of the limite but wout collision\e[39m\n");
 		return false;
 	}
-	if (cars_placed == 0) // If the map is empty (AKA first car), but no more collide with the same car
+	if (!collision_trigger) // If the map is empty (AKA first car), but no more collide with the same car
 	{
 		reset_angle(&(*Lot)[cars_placed]);
-		check_params(env, &(*Lot)[cars_placed], map);
+		if (!check_params(env, &(*Lot)[cars_placed], map))
+			(*Lot)[cars_placed].m_shift += (*env).GetStep();
 	}
 	return true;
 }
@@ -78,7 +81,8 @@ int place_cars(World *env, std::vector<Car>* Lot, int number_cars, std::vector<C
 			cars_placed -= 1;
 			if ((*map).size() <= 0 && (*Lot)[cars_placed].m_lenght + (*Lot)[cars_placed].m_shift >= env->GetLimiteCamion())
 				return -1;
-			(*Lot)[cars_placed].m_shift += env->GetStep();
+			if (cars_placed != 0)
+				(*Lot)[cars_placed].m_shift += env->GetStep();
 			index = 0;
 			for (auto tmp : (*Lot)[cars_placed].m_coords)
 			{

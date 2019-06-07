@@ -13,7 +13,10 @@ function love.quit()
 end
 
 function draw_elem()
+    v = {7000 / 20, w_height / 2}
     love.graphics.line(4500 / 20, w_height / 2 + 500 / 20, 5500 / 20, w_height / 2 + 500 / 20)
+
+    love.graphics.points(v)
 end
 -------MAIN
 
