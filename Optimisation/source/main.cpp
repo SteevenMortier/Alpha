@@ -44,8 +44,6 @@ int main(int ac, char **av)
 
 	index = 0;
 
-	P.x = 1500;
-	P.y = 1500;
 	//Points : Mercedes class S Long
 	carA.m_coords.push_back(Point(0, 0));
 	carA.m_coords.push_back(Point(5271, 0));
@@ -90,6 +88,23 @@ int main(int ac, char **av)
 	carD.m_coords_init = carD.m_coords;
 	carD.m_ID = 3;
 	Lot.push_back(carD);
+
+	/// Mini algo to reverse all cars in Lot
+	int index2;
+	index = 0;
+	for (auto tmp : Lot)
+	{
+		index2 = 0;
+		for (auto point : tmp.m_coords)
+		{
+			(Lot)[index].m_coords[index2].x *= -1;
+			(Lot)[index].m_coords[index2].x += tmp.m_lenght;
+			index2++;
+		}
+		Lot[index].m_coords_init = (Lot)[index].m_coords;
+		index++;
+	}
+	/// end mini algo
 
 	if (place_cars(&env, &Lot, Lot.size(), &map, index) == -1)
 	{

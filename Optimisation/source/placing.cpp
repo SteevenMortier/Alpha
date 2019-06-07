@@ -5,6 +5,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 	bool collision_trigger = false;
+	// ici mettre un switch (boolean) et dans la boucle on avance une fois sur deux
 
 	reset_angle(&(*Lot)[cars_placed]);
 	while (collision_ret)
