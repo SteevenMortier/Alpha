@@ -13,11 +13,11 @@ void reset_angle(Car *car)
 
 // Le probleme viens du fait que si il n'y a pas de collision en premier lieu, le gerbeur est lancé une seule fois
 
-int check_params(World *env, Car *car, std::vector<Car> *map) //prend le env qui contiendra les gerbeurs et les pits
+int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeurs et les pits
 {
     double position = (*car).m_shift;
 	double car_end_position = (*car).m_shift + (*car).m_lenght;
-	double known_position_gerbeur = 7500;
+	double known_position_gerbeur = 7000;
 	double known_position_pit = 5000;
 	double pit_lenght = 1000;
 

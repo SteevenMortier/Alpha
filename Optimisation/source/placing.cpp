@@ -11,7 +11,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 	{
 		collision_trigger = true;
 		DEBUGP printf("\e[31m\tCan't place Car%d at pos %f\e[39m\n", cars_placed, (*Lot)[cars_placed].m_shift);
-		checkp_ret = check_params(env, &(*Lot)[cars_placed], map);
+		checkp_ret = check_params(env, &(*Lot)[cars_placed]);
 		if (!checkp_ret)
 		{
 			reset_angle(&(*Lot)[cars_placed]);
@@ -47,7 +47,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 	if (!collision_trigger) // If the map is empty (AKA first car), but no more collide with the same car
 	{
 		reset_angle(&(*Lot)[cars_placed]);
-		if (!check_params(env, &(*Lot)[cars_placed], map))
+		if (!check_params(env, &(*Lot)[cars_placed]))
 			(*Lot)[cars_placed].m_shift += (*env).GetStep();
 	}
 	return true;
