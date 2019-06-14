@@ -11,8 +11,6 @@ void reset_angle(Car *car)
 	}
 }
 
-// Le probleme viens du fait que si il n'y a pas de collision en premier lieu, le gerbeur est lancé une seule fois
-
 int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeurs et les pits
 {
     double position = (*car).m_shift;
@@ -31,7 +29,7 @@ int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeur
 		|| in_range<double>(car_end_position, known_position_pit - pit_lenght, known_position_pit + pit_lenght))
     {
         pits_holder(env, car);
-		(*car).m_shift += (*env).GetStep();
+		(*car).m_shift += 100;//(*env).GetStep(); //Dans le pit on avance lentement
         return 2;
 	}
     return 0;

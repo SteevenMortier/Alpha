@@ -5,7 +5,7 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 	int checkp_ret = 0;
 	int collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 	bool collision_trigger = false;
-	// ici mettre un switch (boolean) et dans la boucle on avance une fois sur deux
+	//ici mettre un switch (boolean) et dans la boucle on avance une fois sur deux (pourquoi ? - maybe symétrie)
 
 	reset_angle(&(*Lot)[cars_placed]);
 	while (collision_ret)
@@ -26,18 +26,6 @@ bool move_car(World *env, std::vector<Car> *Lot, int cars_placed, std::vector<Ca
 				return false;
 			}
 		}
-		/*VISUP
-		{
-			for (auto tmp : (*Lot))
-			{
-				std::cout << "------" << std::endl;
-				for (auto point : tmp.m_coords)
-				{
-					std::cout << point.x << "||" << point.y << std::endl;
-				}
-			}
-			std::cout << "END MAP" << std::endl;
-		}*/
 		collision_ret = car_collision((*Lot)[cars_placed], (*Lot)[cars_placed].m_coords.size(), map);
 	}
 	if ((*Lot)[cars_placed].m_shift + (*Lot)[cars_placed].m_lenght >= env->GetLimiteCamion())
