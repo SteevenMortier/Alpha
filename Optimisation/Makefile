@@ -9,7 +9,8 @@ SRC_NAME	=	main.cpp		\
 				gerbeurs.cpp	\
 				placing.cpp		\
 				pits.cpp		\
-				check_params.cpp
+				check_params.cpp \
+				create_params.cpp
 
 OBJ_NAME	=	$(SRC:.c=.o)
 SRC_PATH	=	./source

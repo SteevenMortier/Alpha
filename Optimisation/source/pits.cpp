@@ -20,7 +20,7 @@ void put_angle(Car *car, double angle, double pit_position, double pit_high)
         coord.x = coord.x - pit_position;
         coord.y = coord.y;
         tmpx = pit_position + coord.x * cos(angle * (M_PI / 180)) - coord.y * sin(angle * (M_PI / 180));
-        tmpy = 0 + coord.x * sin(angle * (M_PI / 180)) + coord.y * cos(angle * (M_PI / 180));
+        tmpy = 0 + coord.x * sin(angle * (M_PI / 180)) + coord.y * cos(angle * (M_PI / 180)); // 0 because the gerbeur is at 0 on y, if it change juste change by the y of the gerbeur
         tmpy = tmpy + pit_high; // inversed
         (*car).m_coords[index].x = tmpx;
         (*car).m_coords[index].y = tmpy;
@@ -31,10 +31,10 @@ void put_angle(Car *car, double angle, double pit_position, double pit_high)
 
 void pits_holder(World *env, Car *car)
 {
-    double pit_position = 5000;
+    double pit_position = static_cast<Pits *>((*env).m_params[(*env).GetIndex()])->m_position;
     double car_end_position = (*car).m_shift + (*car).m_lenght;
-    double pit_high = -500;
-    double pit_lenght = 1000;
+    double pit_high = static_cast<Pits *>((*env).m_params[(*env).GetIndex()])->get_depht();
+    double pit_lenght = static_cast<Pits *>((*env).m_params[(*env).GetIndex()])->get_lenght();
     double angle = calc_angle(car, pit_high);
 
     if (in_range((*car).m_shift, pit_position - pit_lenght, pit_position + pit_lenght)) // negative angle

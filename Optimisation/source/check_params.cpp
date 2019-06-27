@@ -15,22 +15,42 @@ int check_params(World *env, Car *car) //prend le env qui contiendra les gerbeur
 {
     double position = (*car).m_shift;
 	double car_end_position = (*car).m_shift + (*car).m_lenght;
-	double known_position_gerbeur = 7000;
-	double known_position_pit = 5000;
-	double pit_lenght = 1000;
+	double known_position_gerbeur = 0;
+	double known_position_pit = 0;
+	double pit_lenght = 0;
+	int index = 0;
 
 	reset_angle(car);
-	if (in_range<double>(car_end_position, known_position_gerbeur - 300, known_position_gerbeur + 300))
-	{
-		gerbeur_holder(env, car);
-		return 1;
-	}
-	else if (in_range<double>(position, known_position_pit - pit_lenght, known_position_pit + pit_lenght)
-		|| in_range<double>(car_end_position, known_position_pit - pit_lenght, known_position_pit + pit_lenght))
+	while (static_cast<size_t>(index) < (*env).m_params.size())
     {
-        pits_holder(env, car);
-		(*car).m_shift += 100;//(*env).GetStep(); //Dans le pit on avance lentement
-        return 2;
-	}
+        if ((*env).m_params[index]->m_type == GERBEUR)
+        {
+			known_position_gerbeur = static_cast<Gerbeur *>((*env).m_params[index])->m_position;
+			if (in_range<double>(car_end_position, known_position_gerbeur - 300, known_position_gerbeur + 300))
+			{
+				(*env).SetIndex(index);
+				gerbeur_holder(env, car);
+				return 1;
+			}
+            //std::cout << "We got a Gerbeur of size : ";
+            //std::cout << static_cast<Gerbeur *>((*env).m_params[index])->get_max_angle() << std::endl;
+        }
+        else if ((*env).m_params[index]->m_type == PITS)
+        {
+			known_position_pit = static_cast<Pits *>((*env).m_params[index])->m_position;
+			pit_lenght = static_cast<Pits *>((*env).m_params[index])->get_lenght();
+			if (in_range<double>(position, known_position_pit - pit_lenght, known_position_pit + pit_lenght)
+				|| in_range<double>(car_end_position, known_position_pit - pit_lenght, known_position_pit + pit_lenght))
+		    {
+				(*env).SetIndex(index);
+		        pits_holder(env, car);
+				(*car).m_shift += 100;//(*env).GetStep(); //Dans le pit on avance lentement
+		        return 2;
+			}
+            //std::cout << "We got a Pit of lenght : ";
+            //std::cout << static_cast<Pits *>((*env).m_params[index])->get_lenght() << std::endl;
+        }
+        index++;
+    }
     return 0;
 }

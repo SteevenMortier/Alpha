@@ -34,6 +34,8 @@ double calc_angle(Car *car, double pit_high);
 
 void pits_holder(World *env, Car *car);
 
+void create_params(World *env);
+
 template <typename T>
 bool in_range(T nbr, T min, T max){
 	if (nbr >= min && nbr <= max)

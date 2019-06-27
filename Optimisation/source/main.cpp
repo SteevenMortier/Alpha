@@ -106,19 +106,7 @@ int main(int ac, char **av)
 	}
 	/// end mini algo
 
-	/// START test of inherance
-	Gerbeur *tmpg;
-	tmpg = new Gerbeur();
-	tmpg->m_position = 7000;
-	tmpg->m_type = GERBEUR;
-	tmpg->set_max_angle(35);
-	env.m_params.push_back(tmpg);
-
-	if (env.m_params[0]->m_type == GERBEUR)
-	{
-        std::cout << static_cast<Gerbeur *>(env.m_params[0])->get_max_angle() << std::endl;
-    }
-	///
+	create_params(&env);
 
 	if (place_cars(&env, &Lot, Lot.size(), &map, index) == -1)
 	{

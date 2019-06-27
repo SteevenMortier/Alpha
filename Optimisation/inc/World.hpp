@@ -33,7 +33,7 @@ public:
 	void set_depht(double depht) { m_depth = depht; }
 private:
 	double m_lenght;
-	double m_depth; // profondeur
+	double m_depth; // profondeur a.k.a higth
 };
 
 class World
@@ -49,6 +49,8 @@ public:
 	void SetLimiteCamion(double new_limite);
 	double GetStep();
 	void SetStep(double new_step);
+    int GetIndex() {return m_index_param; }
+    void SetIndex(int number) { m_index_param = number; }
 	std::vector<Truck *> m_params;
 
 private :
@@ -56,6 +58,7 @@ private :
 	bool m_visu_flag;
 	double m_limite_camion;
 	double m_step;
+    int m_index_param;
 };
 
 #endif

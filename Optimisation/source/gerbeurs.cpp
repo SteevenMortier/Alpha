@@ -2,8 +2,8 @@
 
 void gerbeur_holder(World *env, Car *car)
 {
-	double gerbeur_x = 7000;
-	int max_angle = -35;
+	double gerbeur_x = static_cast<Gerbeur *>((*env).m_params[(*env).GetIndex()])->m_position;
+	int max_angle = static_cast<Gerbeur *>((*env).m_params[(*env).GetIndex()])->get_max_angle();
 	static int angle = 0;
 	int index = 0;
 	reset_angle(car);
@@ -17,7 +17,7 @@ void gerbeur_holder(World *env, Car *car)
 	if (angle <= max_angle)
 	{
 		angle = 0;
-		(*car).m_shift += env->GetStep();
+		(*car).m_shift += (*env).GetStep();
 		reset_angle(car);
 	}
 	index = 0;
